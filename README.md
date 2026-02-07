@@ -61,3 +61,11 @@ yarn
 cp .env.example .env
 
 yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
+
+## Our experience with Flare
+
+Working with Flare during the hackathon was a genuinely positive experience. The Flare team were highly responsive and supportive throughout our integration, particularly when we encountered infrastructure issues beyond our control. In one instance, the Data Availability (DA) layer link for the Coston2 network was temporarily broken; despite this, the team provided timely guidance and workarounds that allowed us to continue testing and validating our FDC workflow.
+
+Overall, we really enjoyed our time working with Flare at the ETH Oxford Hackathon.
+
+![Alt text](path/to/Finish photo.png)
