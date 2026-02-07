@@ -42,11 +42,7 @@ To support casual human-computer interaction, we use a Retrieval-Augmented Gener
 
 ### 3) Route visualisation on a map
 
-The optimiser returns an ordered sequence of waypoints (lon/lat). We plot these on an interactive map so users can visually compare:
-- the baseline (near-straight) route versus
-- the EF-aware optimised route
-
-This makes the fuel–climate trade-off controlled by λ immediately interpretable.
+We plot the route on a map and this makes the fuel–climate trade-off controlled by λ interpretable.
 
 ### 4) Verifiable EF outputs with Flare FDC
 
