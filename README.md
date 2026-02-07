@@ -62,6 +62,11 @@ cp .env.example .env
 
 yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
 ```
+## Execution
+
+```bash
+uvicorn main:app --reload --port 8000
+```
 
 ## Our experience with Flare
 
