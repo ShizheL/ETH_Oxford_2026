@@ -61,6 +61,7 @@ yarn
 cp .env.example .env
 
 yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
+```
 
 ## Our experience with Flare
 
