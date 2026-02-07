@@ -34,6 +34,7 @@ Fuel cost (distance-proportional) + λ · EF_contrail
 
 **Hosted API docs**
 - https://testfastapi-production-325b.up.railway.app/docs
+- https://github.com/ShizheL/testFastAPI/
 
 ### 2) Natural-language flight requests via RAG
 
