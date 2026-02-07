@@ -14,3 +14,53 @@ where λ controls the trade-off between operational efficiency and climate impac
 
 Finally, the energy forcing values associated with the resulting routes can be independently verified using **Flare’s FDC (Flare Data Connector)**. By attesting contrail EF values to externally attested meteorological and climate data, this provides a transparent and verifiable pathway for validating the climate impact of optimised flight trajectories.
 
+## Method
+
+Our pipeline has four main components: (1) a route-optimisation API, (2) a natural-language interface (RAG) for extracting flight intent, (3) a map-based visualisation of the computed route, and (4) on-chain verification of the route’s EF outputs using Flare FDC.
+
+### 1) Route Optimisation API (FastAPI on Railway)
+
+We host a FastAPI service on Railway that takes a flight request (start/end coordinates, departure time, duration, grid density, and a trade-off parameter λ) and returns a climate-aware route.
+
+**Core idea.** We discretise the region between origin and destination into a 2D grid of candidate waypoints and connect successive “columns” of waypoints to form a directed acyclic graph. Each edge represents a short flight segment between two candidate waypoints.
+
+For each candidate segment, we estimate contrail **energy forcing (EF)** using `pycontrails` with **ERA5** meteorology and the **CoCiP** contrail model. We then run Dijkstra’s algorithm to minimise a combined objective:
+
+Fuel cost (distance-proportional) + λ · EF_contrail
+
+**Endpoints**
+- `POST /optimum_ef_route`: returns the route as an ordered list of waypoint coordinates plus the total cost.
+- `POST /optimum_ef_route_onchain`: returns integer-scaled outputs suitable for Solidity/on-chain verification workflows.
+
+**Hosted API docs**
+- https://testfastapi-production-325b.up.railway.app/docs
+
+### 2) Natural-language flight requests via RAG
+
+To support casual human-computer interaction, we use a Retrieval-Augmented Generation (RAG) layer to interpret user natural language requests and extract the structured fields needed by the API. For example, a user can describe a flight in plain English (e.g., “tomorrow morning from London to Munich, prioritise lower climate impact”) and the RAG layer produces a validated `FlightData` payload (coordinates, time window, λ, etc.) which is then sent to the optimiser.
+
+### 3) Route visualisation on a map
+
+The optimiser returns an ordered sequence of waypoints (lon/lat). We plot these on an interactive map so users can visually compare:
+- the baseline (near-straight) route versus
+- the EF-aware optimised route
+
+This makes the fuel–climate trade-off controlled by λ immediately interpretable.
+
+### 4) Verifiable EF outputs with Flare FDC
+
+To make the climate-impact outputs auditable, we provide an optional verification path using **Flare Data Connector (FDC)**. The optimiser exposes an on-chain-friendly endpoint (`/optimum_ef_route_onchain`) that returns integer-scaled values. These can be posted and verified via an example Hardhat workflow, demonstrating how EF-related route metrics can be anchored to externally attested data on Flare.
+
+**Verification steps (Hardhat + Flare starter)**
+
+```bash
+git clone https://github.com/flare-foundation/flare-hardhat-starter.git
+
+mv /workspaces/ETH_Oxford_2026/testContract.sol /workspaces/ETH_Oxford_2026/flare-hardhat-starter/contracts/fdcExample
+mv /workspaces/ETH_Oxford_2026/testContract.ts /workspaces/ETH_Oxford_2026/flare-hardhat-starter/scripts/fdcExample
+
+cd flare-hardhat-starter
+yarn
+cp .env.example .env
+
+yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
