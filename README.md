@@ -65,6 +65,7 @@ yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
 ## Execution
 
 ```bash
+pip install react-leaflet leaflet
 uvicorn main:app --reload --port 8000
 ```
 
