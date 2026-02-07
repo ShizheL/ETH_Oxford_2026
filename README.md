@@ -69,4 +69,4 @@ Working with Flare during the hackathon was a genuinely positive experience. The
 
 Overall, we really enjoyed our time working with Flare at the ETH Oxford Hackathon.
 
-![Alt text](path/to/Finish photo.png)
+![Alt text](path/to/Finish_photo.jpeg)
