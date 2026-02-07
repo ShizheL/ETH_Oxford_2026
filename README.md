@@ -57,8 +57,8 @@ To make the climate-impact outputs auditable, we provide an optional verificatio
 ```bash
 git clone https://github.com/flare-foundation/flare-hardhat-starter.git
 
-mv /workspaces/ETH_Oxford_2026/testContract.sol /workspaces/ETH_Oxford_2026/flare-hardhat-starter/contracts/fdcExample
-mv /workspaces/ETH_Oxford_2026/testContract.ts /workspaces/ETH_Oxford_2026/flare-hardhat-starter/scripts/fdcExample
+mv testContract.sol /flare-hardhat-starter/contracts/fdcExample
+mv testContract.ts /flare-hardhat-starter/scripts/fdcExample
 
 cd flare-hardhat-starter
 yarn
