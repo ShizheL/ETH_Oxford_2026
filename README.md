@@ -1,4 +1,4 @@
-# ETH_Oxford_2026
+# Verifiable Contrail Optimisation
 
 ## Introduction
 
