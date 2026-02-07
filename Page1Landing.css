@@ -1,0 +1,159 @@
+/* ============================================
+   Page 1: Landing Page — 飞机窗户 + 滑块
+============================================ */
+
+.page1 {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* 对应demo PDF第一页的蓝灰渐变背景 */
+  background: linear-gradient(to bottom, #4a5f7f 0%, #7d8fa3 100%);
+}
+
+/* SkyTrace 标题 — 用衬线体，大写感觉 */
+.title {
+  font-size: 5rem;
+  font-weight: 300;
+  letter-spacing: 0.5rem;
+  color: var(--white);
+  margin-bottom: 3rem;
+  font-family: 'Georgia', serif;
+  text-transform: lowercase;
+}
+
+/* 窗户外框容器 */
+.window-container {
+  position: relative;
+  width: 500px;
+  height: 600px;
+}
+
+/* 飞机窗户（圆角矩形 + 多层阴影模拟窗框） */
+.airplane-window {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 120px / 140px;
+  padding: 25px;
+  box-shadow:
+    0 0 0 15px rgba(200, 200, 200, 0.3),
+    0 0 0 30px rgba(150, 150, 150, 0.2),
+    0 30px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.airplane-window:hover {
+  transform: scale(1.02);
+}
+
+/* 窗内视野（裁剪成窗户形状） */
+.window-view {
+  width: 100%;
+  height: 100%;
+  border-radius: 100px / 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 天空视图基础样式 */
+.sky-view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: opacity 1.5s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+/* 污染天空 — 灰黄色 + 模拟雾霾 */
+.polluted-sky {
+  background-image:
+    linear-gradient(rgba(139, 125, 107, 0.3), rgba(139, 125, 107, 0.5)),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><rect fill="%238b7d6b" width="1000" height="1000"/><circle cx="800" cy="400" r="80" fill="%23ffa500" opacity="0.6"/></svg>');
+  opacity: 1;
+}
+
+/* 晴天 — 蓝色渐变 */
+.clean-sky {
+  background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
+  opacity: 0; /* 初始隐藏，由JS控制 */
+}
+
+/* "Ready to take off" 提示文字 */
+.tap-message {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 25px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 底部滑块区域 */
+.slider-container {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.plane-icon {
+  font-size: 2rem;
+}
+
+/* 自定义 range slider */
+.sky-slider {
+  width: 400px;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  border-radius: 5px;
+}
+
+.sky-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  background: white;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-text {
+  color: white;
+  font-size: 1rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+  .window-container {
+    width: 350px;
+    height: 420px;
+  }
+  .sky-slider {
+    width: 300px;
+  }
+  .slider-container {
+    flex-direction: column;
+  }
+}
