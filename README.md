@@ -44,7 +44,7 @@ To support casual human-computer interaction, we use a Retrieval-Augmented Gener
 
 We plot the route on a map and this makes the fuel–climate trade-off controlled by λ interpretable. Here is an example for a flight between London and Paris.
 
-![ ](exeample_map.jpeg)
+![ ](example_map.jpeg)
 
 ### 4) Verifiable EF outputs with Flare FDC
 
