@@ -2,22 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet'
 import '../styles/Page5Optimizer.css'
 
-/**
- * Page5Optimizer — 核心页面：地图 + 路线优化
- *
- * 功能：
- * - 显示 Leaflet 地图，标注起点和终点
- * - Lambda 滑块 (0~2): 控制燃料成本 vs 减少sky-trace的权重
- * - "Optimize Route" 按钮：调用后端API计算最优路线
- * - 地图上画两条线：灰色虚线（直线最短路线） + 黑色实线（优化路线）
- * - 右下角 "More information" → 进入 Page6
- *
- * Props:
- * - goToPage(n)
- * - flightData: 航班信息（含起终点坐标）
- */
 
-// ---- 辅助组件：自动调整地图视野 ----
 function FitBounds({ bounds }) {
   const map = useMap()
   useEffect(() => {
@@ -34,20 +19,16 @@ function Page5Optimizer({ goToPage, flightData }) {
   const [optimizedCoords, setOptimizedCoords] = useState(null)
   const [routeStats, setRouteStats] = useState(null)
 
-  // 起终点坐标
   const startPos = [flightData.startLat || 31.14, flightData.startLon || 121.81]
   const endPos = [flightData.endLat || 51.47, flightData.endLon || -0.45]
 
-  // 直线路线（灰色虚线）
   const directRoute = [startPos, endPos]
 
-  // ---- 点击 Optimize Route ----
   const handleOptimize = async () => {
     setIsLoading(true)
     setOptimizedCoords(null)
 
     try {
-      // 调用你的 Python 后端 API
       const response = await fetch('/api/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,9 +50,7 @@ function Page5Optimizer({ goToPage, flightData }) {
       const data = await response.json()
       console.log('Optimize response:', data)
 
-      // 从返回数据中提取路线坐标
       if (data.route_edges && data.route_edges.length > 0) {
-        // 按照项目计划的 route_edges 格式
         const coords = []
         coords.push([data.route_edges[0].from.lat, data.route_edges[0].from.lon])
         data.route_edges.forEach((edge) => {
@@ -80,7 +59,6 @@ function Page5Optimizer({ goToPage, flightData }) {
         setOptimizedCoords(coords)
         setRouteStats(data.totals || null)
       } else if (data.route && data.route.length > 0) {
-        // 兼容你之前的 API 格式（旧版）
         const coords = data.route.map((point) => [point.lat, point.lon])
         setOptimizedCoords(coords)
       }
@@ -95,7 +73,7 @@ function Page5Optimizer({ goToPage, flightData }) {
   return (
     <div className="page page5">
       <div className="optimizer-container">
-        {/* Leaflet 地图 */}
+
         <MapContainer
           center={[45, 20]}
           zoom={3}
@@ -107,20 +85,16 @@ function Page5Optimizer({ goToPage, flightData }) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          {/* 自动对齐视野到起终点 */}
           <FitBounds bounds={[startPos, endPos]} />
 
-          {/* 起点标记 */}
           <Marker position={startPos}>
             <Popup>{flightData.departure || 'Start'}</Popup>
           </Marker>
 
-          {/* 终点标记 */}
           <Marker position={endPos}>
             <Popup>{flightData.destination || 'End'}</Popup>
           </Marker>
 
-          {/* 灰色虚线 — 直线最短路线 */}
           <Polyline
             positions={directRoute}
             pathOptions={{
@@ -131,7 +105,6 @@ function Page5Optimizer({ goToPage, flightData }) {
             }}
           />
 
-          {/* 黑色实线 — 优化路线 */}
           {optimizedCoords && (
             <Polyline
               positions={optimizedCoords}
@@ -144,7 +117,6 @@ function Page5Optimizer({ goToPage, flightData }) {
           )}
         </MapContainer>
 
-        {/* Lambda 控制区 */}
         <div className="lambda-control">
           <div className="lambda-header">
             Click <strong>Optimize Route</strong> to see results.
@@ -179,7 +151,6 @@ function Page5Optimizer({ goToPage, flightData }) {
           </div>
         </div>
 
-        {/* 优化按钮 */}
         <button
           className="optimize-button"
           onClick={handleOptimize}
@@ -188,7 +159,6 @@ function Page5Optimizer({ goToPage, flightData }) {
           {isLoading ? 'Calculating...' : 'Optimize Route'}
         </button>
 
-        {/* 加载指示器 */}
         {isLoading && (
           <div className="loading">
             <div className="spinner" />
@@ -196,7 +166,6 @@ function Page5Optimizer({ goToPage, flightData }) {
           </div>
         )}
 
-        {/* 路线对比表（如果有数据） */}
         {routeStats && (
           <div className="route-stats">
             <h3>Route Comparison</h3>
@@ -222,7 +191,6 @@ function Page5Optimizer({ goToPage, flightData }) {
         )}
       </div>
 
-      {/* 右下角 "More information" 按钮 */}
       <div className="info-button" onClick={() => goToPage(6)}>
         <div style={{ textAlign: 'center' }}>
           <div className="info-icon">ℹ</div>
