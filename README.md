@@ -6,7 +6,7 @@ Aircraft condensation trails (contrails) contribute a substantial fraction of av
 
 Existing contrail-avoidance research has largely relied on the *polygon method*, in which airspace is separated into “contrail-forming” and “non-contrail-forming” regions. While computationally convenient, this binary classification fails to capture the inherently continuous nature of contrail energy forcing, as the climate impact of a contrail varies smoothly with atmospheric state rather than switching on or off at a fixed boundary.
 
-We are the first to directly address this limitation by modelling contrail impact as a **continuous energy-forcing (EF) penalty field** over airspace. Instead of avoiding hard-coded polygons, we assign each region a real-valued EF penalty and compute optimal flight trajectories by minimising a combined objective:
+We are the first to directly address this limitation by modelling contrail impact as a **continuous energy-forcing (EF) penalty field** over airspace, to the best of our knowledge. Instead of avoiding hard-coded polygons, we assign each region a real-valued EF penalty and compute optimal flight trajectories by minimising a combined objective:
 
 Total cost = fuel burn + λ · EF_contrail
 
