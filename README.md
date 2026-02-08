@@ -14,6 +14,10 @@ where λ controls the trade-off between operational efficiency and climate impac
 
 Finally, the energy forcing values associated with the resulting routes can be independently verified using **Flare’s FDC (Flare Data Connector)**. By attesting contrail EF values to externally attested meteorological and climate data, this provides a transparent and verifiable pathway for validating the climate impact of optimised flight trajectories.
 
+## Link to Demo Video
+
+https://youtu.be/dUVVDJaQxLQ
+
 ## Method
 
 Our pipeline has four main components: (1) a route-optimisation API, (2) a natural-language interface (RAG) for extracting flight intent, (3) a map-based visualisation of the computed route, and (4) on-chain verification of the route’s EF outputs using Flare FDC.
