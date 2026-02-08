@@ -10,9 +10,7 @@ function Page2Transition({ goToPage }) {
           style={{ cursor: 'pointer' }}
         >
           <div className="window-view">
-            {/* 晴天（直接显示，opacity=1） */}
             <div className="sky-view clean-sky" style={{ opacity: 1 }} />
-            {/* 提示文字（直接显示） */}
             <div className="tap-message" style={{ opacity: 1 }}>
               Ready to take off?<br />Just tap the window!
             </div>
