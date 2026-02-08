@@ -41,7 +41,7 @@ class OptimizeRequest(BaseModel):
     end: LatLon
     departure_time: str
     aircraft_type: str = "B738"
-    lambda_value: float = 1.0  # 原字段名 lambda 是Python保留字，改名
+    lambda_value: float = 1.0 
     grid_config: Optional[GridConfig] = None
 
     class Config:
@@ -55,7 +55,6 @@ async def health():
 
 
 
-# 你的 Anthropic API Key — 放在环境变量中更安全
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "YOUR_KEY_HERE")
 
 
@@ -121,7 +120,7 @@ async def optimize_route(request: OptimizeRequest):
         "end_long": request.end.lon,
         "end_lat": request.end.lat,
         "start_time": request.departure_time,
-        "duration_hours": 2,  # 可以从 flightData 推算
+        "duration_hours": 2, 
         "fuel_cost_per_km": 0.15,
         "lambda_value": request.lambda_value,
     }
@@ -143,25 +142,17 @@ async def optimize_route(request: OptimizeRequest):
         return {"error": str(e)}
 
 
-# ========================================
-# 路由 4: 路线验证 (Module 3)
-# ========================================
 
 VERIFY_URL = os.getenv("VERIFY_URL", "http://localhost:8001/api/verifyRoute")
 
 
 @app.post("/api/verify")
 async def verify_route(route_payload: dict):
-    """
-    (可选) 将路线发给 Module 3 验证。
-    如果 Module 3 没跑，直接返回未验证结果。
-    """
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(VERIFY_URL, json=route_payload)
             return response.json()
     except Exception:
-        # Module 3 不可用时的 fallback
         return {
             "status": "unverified",
             "verified_on_chain": False,
@@ -169,9 +160,6 @@ async def verify_route(route_payload: dict):
         }
 
 
-# ========================================
-# 启动提示
-# ========================================
 
 if __name__ == "__main__":
     import uvicorn
