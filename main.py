@@ -1,18 +1,3 @@
-"""
-SkyTrace 后端 — main.py
-
-启动方式:
-  cd backend
-  source venv/bin/activate
-  uvicorn main:app --reload --port 8000
-
-这个文件是后端入口,包含所有API路由。
-它对应项目计划中的：
-  - Module 4 的后端部分,接收UI请求
-  - 转发给 Module 2 (optimizer) 和 Module 1 (ef_api)
-  - Module 3 (verification) 验证后返回
-"""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
