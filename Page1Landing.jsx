@@ -1,33 +1,18 @@
 import { useState } from 'react'
 import '../styles/Page1Landing.css'
 
-/**
- * Page1Landing — 首页
- * 
- * 功能：
- * - 显示 SkyTrace 标题
- * - 飞机窗户：窗外是污染天空
- * - 底部滑块：拖动飞机图标，天空从污染渐变为晴天
- * - 滑到100%或点击窗户（>80%时）→ 进入 Page2
- * 
- * Props:
- * - goToPage(n): 切换页面的函数
- */
 function Page1Landing({ goToPage }) {
   const [sliderValue, setSliderValue] = useState(0)
 
-  // 滑块变化时
   const handleSliderChange = (e) => {
     const value = parseInt(e.target.value)
     setSliderValue(value)
 
-    // 滑到100自动跳转
     if (value === 100) {
       setTimeout(() => goToPage(2), 500)
     }
   }
 
-  // 点击窗户（滑块>80时才有效）
   const handleWindowClick = () => {
     if (sliderValue > 80) {
       goToPage(2)
