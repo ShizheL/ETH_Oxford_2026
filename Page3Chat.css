@@ -70,7 +70,6 @@
   color: #424242;
 }
 
-/* Yes / No 确认按钮 */
 .confirm-buttons {
   display: flex;
   gap: 1rem;
@@ -107,7 +106,6 @@
   transform: translateY(-2px);
 }
 
-/* 底部输入框 */
 .chat-input-container {
   display: flex;
   gap: 1rem;
@@ -149,7 +147,6 @@
   cursor: not-allowed;
 }
 
-/* 打字指示器 */
 .typing-indicator {
   animation: blink 1s infinite;
 }
@@ -159,7 +156,6 @@
   50% { opacity: 1; }
 }
 
-/* 响应式 */
 @media (max-width: 768px) {
   .chat-container {
     width: 95%;
