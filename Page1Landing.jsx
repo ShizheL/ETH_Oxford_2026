@@ -26,16 +26,13 @@ function Page1Landing({ goToPage }) {
       <div className="window-container">
         <div className="airplane-window" onClick={handleWindowClick}>
           <div className="window-view">
-            {/* 污染天空 — 始终在底层 */}
             <div className="sky-view polluted-sky" />
 
-            {/* 晴天 — opacity 由滑块控制 */}
             <div
               className="sky-view clean-sky"
               style={{ opacity: sliderValue / 100 }}
             />
 
-            {/* "Ready to take off" 提示文字 — 滑块>80时显示 */}
             <div
               className="tap-message"
               style={{ opacity: sliderValue > 80 ? 1 : 0 }}
@@ -46,7 +43,6 @@ function Page1Landing({ goToPage }) {
         </div>
       </div>
 
-      {/* 底部滑块 */}
       <div className="slider-container">
         <span className="plane-icon">✈️</span>
         <input
