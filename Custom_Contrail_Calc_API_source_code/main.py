@@ -1,18 +1,4 @@
 <<<<<<< HEAD
-"""
-SkyTrace 后端 — main.py
-
-启动方式:
-  cd backend
-  source venv/bin/activate
-  uvicorn main:app --reload --port 8000
-
-这个文件是后端入口,包含所有API路由。
-它对应项目计划中的：
-  - Module 4 的后端部分,接收UI请求
-  - 转发给 Module 2 (optimizer) 和 Module 1 (ef_api)
-  - Module 3 (verification) 验证后返回
-"""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,14 +8,11 @@ import httpx
 import os
 import json
 
-# ---- 如果你用 .env 文件存放 API key ----
 # from dotenv import load_dotenv
 # load_dotenv()
 
 app = FastAPI(title="SkyTrace API")
 
-# ---- CORS 配置 ----
-# 允许前端 (localhost:5173) 访问后端 (localhost:8000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -39,12 +22,8 @@ app.add_middleware(
 )
 
 
-# ========================================
-# 数据模型 (Pydantic)
-# ========================================
 
 class ChatRequest(BaseModel):
-    """AI聊天请求 — Page3用"""
     system: str
     messages: list
 
@@ -62,7 +41,6 @@ class GridConfig(BaseModel):
 
 
 class OptimizeRequest(BaseModel):
-    """路线优化请求 — Page5用（对应项目计划 Module 2 的输入）"""
     start: LatLon
     end: LatLon
     departure_time: str
@@ -70,25 +48,17 @@ class OptimizeRequest(BaseModel):
     lambda_value: float = 1.0  # 原字段名 lambda 是Python保留字，改名
     grid_config: Optional[GridConfig] = None
 
-    # 兼容旧格式（你之前HTML中用的字段名）
     class Config:
         populate_by_name = True
 
 
-# ========================================
-# 路由 1: 健康检查
-# ========================================
 
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "SkyTrace API"}
 
 
-# ========================================
-# 路由 2: AI 聊天代理 (Page3 用)
-# ========================================
 
-# 你的 Anthropic API Key — 放在环境变量中更安全
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "YOUR_KEY_HERE")
 
 
@@ -635,3 +605,4 @@ def main_onchain(dat: FlightData):
     }
 
 >>>>>>> dc1c73f (Add contrail API code)
+
