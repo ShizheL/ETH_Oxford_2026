@@ -64,10 +64,6 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "YOUR_KEY_HERE")
 
 @app.post("/api/chat")
 async def chat_proxy(request: ChatRequest):
-    """
-    代理 AI 聊天请求到 Anthropic API。
-    这样前端不需要暴露 API key。
-    """
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             "https://api.anthropic.com/v1/messages",
@@ -85,17 +81,12 @@ async def chat_proxy(request: ChatRequest):
         )
         data = response.json()
 
-    # 提取文本回复
     text = data.get("content", [{}])[0].get("text", "Sorry, no response.")
     return {"response": text}
 
 
 @app.post("/api/extract-flight")
 async def extract_flight(request: ChatRequest):
-    """
-    用 AI 从对话历史中提取结构化航班数据。
-    返回 JSON 字符串，前端解析。
-    """
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             "https://api.anthropic.com/v1/messages",
@@ -117,12 +108,7 @@ async def extract_flight(request: ChatRequest):
     return {"response": text}
 
 
-# ========================================
-# 路由 3: 路线优化 (Page5 用)
-# ========================================
 
-# 你的路线优化后端地址 (Module 2)
-# 如果Module 2跑在别的机器上，改这个URL
 OPTIMIZER_URL = os.getenv(
     "OPTIMIZER_URL",
     "https://testfastapi-production-325b.up.railway.app/optimum_ef_route"
@@ -131,18 +117,6 @@ OPTIMIZER_URL = os.getenv(
 
 @app.post("/api/optimize")
 async def optimize_route(request: OptimizeRequest):
-    """
-    接收前端的优化请求，转发给 Module 2 (Optimizer)。
-    
-    流程:
-    1. 前端 → 这里 (POST /api/optimize)
-    2. 这里 → Module 2 (POST /optimum_ef_route 或 /api/optimize)
-    3. Module 2 返回 route_edges
-    4. (可选) 这里 → Module 3 验证
-    5. 返回给前端
-    """
-    # 构建发给 Module 2 的请求体
-    # 这里需要匹配你的 Module 2 实际接受的格式
     optimizer_payload = {
         "grid_density": 6,
         "start_long": request.start.lon,
@@ -150,7 +124,7 @@ async def optimize_route(request: OptimizeRequest):
         "end_long": request.end.lon,
         "end_lat": request.end.lat,
         "start_time": request.departure_time,
-        "duration_hours": 2,  # 可以从 flightData 推算
+        "duration_hours": 2, 
         "fuel_cost_per_km": 0.15,
         "lambda_value": request.lambda_value,
     }
@@ -163,7 +137,6 @@ async def optimize_route(request: OptimizeRequest):
             )
             data = response.json()
 
-        # ---- (可选) 调用 Module 3 验证 ----
         # verification_response = await verify_route(data)
         # return verification_response
 
@@ -175,25 +148,17 @@ async def optimize_route(request: OptimizeRequest):
         return {"error": str(e)}
 
 
-# ========================================
-# 路由 4: 路线验证 (Module 3)
-# ========================================
 
 VERIFY_URL = os.getenv("VERIFY_URL", "http://localhost:8001/api/verifyRoute")
 
 
 @app.post("/api/verify")
 async def verify_route(route_payload: dict):
-    """
-    (可选) 将路线发给 Module 3 验证。
-    如果 Module 3 没跑，直接返回未验证结果。
-    """
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(VERIFY_URL, json=route_payload)
             return response.json()
     except Exception:
-        # Module 3 不可用时的 fallback
         return {
             "status": "unverified",
             "verified_on_chain": False,
@@ -201,9 +166,6 @@ async def verify_route(route_payload: dict):
         }
 
 
-# ========================================
-# 启动提示
-# ========================================
 
 if __name__ == "__main__":
     import uvicorn
@@ -605,4 +567,5 @@ def main_onchain(dat: FlightData):
     }
 
 >>>>>>> dc1c73f (Add contrail API code)
+
 
