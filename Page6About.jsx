@@ -1,16 +1,5 @@
 import '../styles/Page6About.css'
 
-/**
- * Page6About — 项目信息页
- *
- * 功能：
- * - 显示 About this project 信息
- * - Big Picture, Core Data Flow, Shared Definitions
- * - "Back to Optimizer" 按钮 → 返回 Page5
- *
- * Props:
- * - goToPage(n)
- */
 function Page6About({ goToPage }) {
   return (
     <div className="page page6">
