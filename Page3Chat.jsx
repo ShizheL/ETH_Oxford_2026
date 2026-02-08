@@ -1,26 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import '../styles/Page3Chat.css'
 
-/**
- * Page3Chat — AI 聊天页
- *
- * 功能：
- * - 标题: "Tell me about your target flight route."
- * - 用户输入航班描述，AI引导收集所有信息
- * - 需要收集: departure, destination, time, aircraft type, duration
- * - 全部收集完后，AI发送确认消息 + Yes/No按钮
- * - Yes → 提取数据 → 进入Page4
- * - No → 继续对话
- *
- * Props:
- * - goToPage(n)
- * - flightData: 全局航班数据
- * - setFlightData: 更新航班数据
- */
-
-// ========== 这里配置你的AI API ==========
-// 方式A: 直接调用 Anthropic API（前端调用，不安全但hackathon可以）
-// 方式B: 通过你的Python后端代理（更安全，推荐）
 const AI_MODE = 'backend' // 改成 'anthropic' 如果直接调前端
 const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_KEY_HERE' // 仅 AI_MODE='anthropic' 时需要
 const BACKEND_URL = '/api/chat' // 通过后端代理
@@ -40,36 +20,29 @@ function Page3Chat({ goToPage, flightData, setFlightData }) {
   const [conversationHistory, setConversationHistory] = useState([])
   const chatEndRef = useRef(null)
 
-  // 每次消息更新，自动滚动到底部
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // ---- 发送消息 ----
   const sendMessage = async () => {
     const userMessage = inputValue.trim()
     if (!userMessage || isLoading) return
 
-    // 1. 显示用户消息
     setMessages((prev) => [...prev, { role: 'user', content: userMessage }])
     setInputValue('')
     setIsLoading(true)
 
-    // 2. 更新对话历史
     const newHistory = [...conversationHistory, { role: 'user', content: userMessage }]
     setConversationHistory(newHistory)
 
-    // 3. 调用AI获取回复
     try {
       const aiResponse = await callAI(newHistory)
 
-      // 4. 更新对话历史
       setConversationHistory((prev) => [
         ...prev,
         { role: 'assistant', content: aiResponse },
       ])
 
-      // 5. 检查是否是确认消息（包含 "confirm" 或 "Yes to confirm"）
       if (
         aiResponse.toLowerCase().includes('confirm') ||
         aiResponse.toLowerCase().includes('yes to confirm')
@@ -93,7 +66,6 @@ function Page3Chat({ goToPage, flightData, setFlightData }) {
     setIsLoading(false)
   }
 
-  // ---- 调用AI API ----
   async function callAI(history) {
     const systemPrompt = `You are a helpful flight booking assistant. Your job is to collect the following information from the user:
 1. Departure city/airport
@@ -110,7 +82,6 @@ Please select Yes to confirm or No to continue the conversation."
 Be conversational and helpful.`
 
     if (AI_MODE === 'anthropic') {
-      // ==== 方式A: 直接调 Anthropic API ====
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -129,7 +100,6 @@ Be conversational and helpful.`
       const data = await response.json()
       return data.content[0].text
     } else {
-      // ==== 方式B: 通过Python后端代理 ====
       const response = await fetch(BACKEND_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,12 +113,9 @@ Be conversational and helpful.`
     }
   }
 
-  // ---- 用户点击 Yes/No ----
   const handleConfirm = async (confirmed) => {
     if (confirmed) {
-      // 提取航班数据
       await extractFlightData()
-      // 跳转到 Page4
       setTimeout(() => goToPage(4), 500)
     } else {
       setMessages((prev) => [
@@ -159,7 +126,6 @@ Be conversational and helpful.`
     }
   }
 
-  // ---- 从对话中提取结构化航班数据 ----
   async function extractFlightData() {
     const extractionPrompt = `Based on the conversation, extract flight information in JSON format:
 {
@@ -235,7 +201,6 @@ Return ONLY the JSON, no other text.`
     }
   }
 
-  // ---- 键盘 Enter 发送 ----
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') sendMessage()
   }
