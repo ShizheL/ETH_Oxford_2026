@@ -1,12 +1,5 @@
 import '../styles/Page2Transition.css'
 
-/**
- * Page2Transition — 过渡页
- * 
- * 功能：
- * - 晴天窗户 + "Ready to take off? Just tap the window!"
- * - 用户点击窗户 → 进入 Page3（AI聊天）
- */
 function Page2Transition({ goToPage }) {
   return (
     <div className="page page2">
