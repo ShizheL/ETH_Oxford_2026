@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import '../styles/Page3Chat.css'
 
-const AI_MODE = 'backend' // 改成 'anthropic' 如果直接调前端
-const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_KEY_HERE' // 仅 AI_MODE='anthropic' 时需要
-const BACKEND_URL = '/api/chat' // 通过后端代理
-// =========================================
+const AI_MODE = 'backend'
+const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_KEY_HERE'
+const BACKEND_URL = '/api/chat'
 
 function Page3Chat({ goToPage, flightData, setFlightData }) {
   const [messages, setMessages] = useState([
@@ -181,12 +180,10 @@ Return ONLY the JSON, no other text.`
         jsonStr = data.response
       }
 
-      // 解析JSON
       const extracted = JSON.parse(jsonStr)
       setFlightData((prev) => ({ ...prev, ...extracted }))
     } catch (error) {
       console.error('Extraction error:', error)
-      // Fallback 默认数据
       setFlightData({
         departure: 'Shanghai Pudong (PVG)',
         destination: 'London Heathrow (LHR)',
@@ -208,16 +205,13 @@ Return ONLY the JSON, no other text.`
   return (
     <div className="page page3">
       <div className="chat-container">
-        {/* 顶部标题 */}
         <div className="chat-header">Tell me about your target flight route.</div>
 
-        {/* 消息列表 */}
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div key={index} className={`message ${msg.role}-message`}>
               {msg.content}
 
-              {/* 如果是确认消息，显示 Yes/No 按钮 */}
               {msg.isConfirmation && (
                 <div className="confirm-buttons">
                   <button
@@ -237,18 +231,15 @@ Return ONLY the JSON, no other text.`
             </div>
           ))}
 
-          {/* 加载指示器 */}
           {isLoading && (
             <div className="message ai-message">
               <span className="typing-indicator">●●●</span>
             </div>
           )}
 
-          {/* 用于自动滚动到底部的锚点 */}
           <div ref={chatEndRef} />
         </div>
 
-        {/* 底部输入框 */}
         <div className="chat-input-container">
           <input
             type="text"
