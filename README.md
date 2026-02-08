@@ -80,6 +80,13 @@ pip install react-leaflet leaflet
 uvicorn main:app --reload --port 8000
 ```
 
+## Built on Flare (details)
+
+Network: Coston2
+Integrations: Flare Data Connector (FDC) for Web2Json
+Smart Contract Address: 0x5B0C7dd599289645e70f1701C83a956a0Cea7E07
+Coston2 Explorer Link: https://coston2-explorer.flare.network/address/0x5B0C7dd599289645e70f1701C83a956a0Cea7E07?tab=contract 
+
 ## Our experience with Flare
 
 Working with Flare during the hackathon was a great experience. The Flare team were highly responsive and supportive throughout the hackathon, particularly when we encountered infrastructure issues beyond our control. In one instance, the Data Availability (DA) layer link for the Coston2 network was temporarily broken; despite this, the team provided timely guidance and workarounds that allowed us to continue testing and validating our code.
