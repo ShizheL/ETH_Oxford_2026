@@ -18,6 +18,18 @@ Finally, the energy forcing values associated with the resulting routes can be i
 
 https://youtu.be/dUVVDJaQxLQ
 
+## Built on Flare (details)
+
+Network: Coston2
+
+Integrations: Flare Data Connector (FDC) for Web2Json
+
+Smart Contract Address: 0x5B0C7dd599289645e70f1701C83a956a0Cea7E07
+
+Coston2 Explorer Link: https://coston2-explorer.flare.network/address/0x5B0C7dd599289645e70f1701C83a956a0Cea7E07?tab=contract 
+
+Setup instructions are provided below.
+
 ## Method
 
 Our pipeline has four main components: (1) a route-optimisation API, (2) a natural-language interface (RAG) for extracting flight intent, (3) a map-based visualisation of the computed route, and (4) on-chain verification of the route’s EF outputs using Flare FDC.
@@ -81,13 +93,6 @@ Here is an example of a verification on a flight segment:
 pip install react-leaflet leaflet
 uvicorn main:app --reload --port 8000
 ```
-
-## Built on Flare (details)
-
-Network: Coston2
-Integrations: Flare Data Connector (FDC) for Web2Json
-Smart Contract Address: 0x5B0C7dd599289645e70f1701C83a956a0Cea7E07
-Coston2 Explorer Link: https://coston2-explorer.flare.network/address/0x5B0C7dd599289645e70f1701C83a956a0Cea7E07?tab=contract 
 
 ## Our experience with Flare
 
