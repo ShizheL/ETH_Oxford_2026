@@ -45,7 +45,7 @@ class OptimizeRequest(BaseModel):
     end: LatLon
     departure_time: str
     aircraft_type: str = "B738"
-    lambda_value: float = 1.0  # 原字段名 lambda 是Python保留字，改名
+    lambda_value: float = 1.0  
     grid_config: Optional[GridConfig] = None
 
     class Config:
@@ -567,5 +567,6 @@ def main_onchain(dat: FlightData):
     }
 
 >>>>>>> dc1c73f (Add contrail API code)
+
 
 
