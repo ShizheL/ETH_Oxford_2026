@@ -67,6 +67,8 @@ yarn hardhat run scripts/fdcExample/testContract.ts --network coston2
 
 Here is an example of a verification on a flight segment:
 
+![ ](FDC_proof_example.jpg)
+
 ## Execution
 
 ```bash
